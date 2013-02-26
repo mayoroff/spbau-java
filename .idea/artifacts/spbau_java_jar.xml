@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="spbau-java:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/spbau_java_jar</output-path>
+    <root id="archive" name="spbau-java.jar">
+      <element id="dir-copy" path="$PROJECT_DIR$/src" />
+    </root>
+  </artifact>
+</component>
