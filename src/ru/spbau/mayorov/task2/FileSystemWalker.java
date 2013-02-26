@@ -1,6 +1,7 @@
 package ru.spbau.mayorov.task2;
 
 import java.io.File;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,12 +53,18 @@ public class FileSystemWalker {
             name += "|----";
         }
 
-        name += f.getName();
 
-        if (!f.canRead()) {
-             name = f.getName() + " (access denied)";
+        try {
+            if (!f.canRead()) {
+                name += f.getName() + " (access denied)";
+            } else {
+                name += f.getName();
+            }
+        } catch (AccessControlException e) {
+            name += f.getName() + " (access denied)";
+        }  finally {
+            output.add(name);
         }
-        output.add(name);
 
         File[] children = f.listFiles(filter);
 
