@@ -24,8 +24,8 @@ public class FileSystemWalker {
      * @param flt filename filter object.
      */
     public FileSystemWalker(final String path, final PatternFilter flt) {
-         this.rootPath = path;
-         this.filter = flt;
+        this.rootPath = path;
+        this.filter = flt;
     }
 
     /** Returns strings representing formatted tree of filesystem structure.
@@ -53,30 +53,25 @@ public class FileSystemWalker {
             name += "|----";
         }
 
-
         try {
             if (!f.canRead()) {
                 name += f.getName() + " (access denied)";
             } else {
                 name += f.getName();
+                output.add(name);
+                File[] children = f.listFiles(filter);
+                if (children == null) {
+                    return;
+                }
+                for (File child: children) {
+                    if (f.isDirectory()) {
+                        processFile(child, level + 1);
+                    }
+                }
             }
         } catch (AccessControlException e) {
             name += f.getName() + " (access denied)";
-        }  finally {
             output.add(name);
         }
-
-        File[] children = f.listFiles(filter);
-
-        if (children == null) {
-            return;
-        }
-
-        for (File child: children) {
-            if (f.isDirectory()) {
-                processFile(child, level + 1);
-            }
-        }
-
     }
 }
