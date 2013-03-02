@@ -18,7 +18,7 @@ public class PatternFilter implements FilenameFilter {
      *
      * @param regex regular expression in string representation.
      */
-    PatternFilter(final String regex) {
+    public PatternFilter(final String regex) {
          pattern = Pattern.compile(regex);
     }
 
