@@ -9,7 +9,7 @@ public class XOPlayer extends Player {
     private final int fieldSize;
     private int playerSign;
 
-    public XOPlayer(int fieldSize, int numberInRow, boolean isX) {
+    public XOPlayer(Integer fieldSize, Integer numberInRow, Boolean isX) {
 		this.fieldSize = fieldSize;
         if (isX == true) {
             this.playerSign = 1;
@@ -38,9 +38,21 @@ public class XOPlayer extends Player {
             return move(field);
         } else
         {
+
+
+
             Position newField;
             newField = field.clone();
             newField.toArray()[moveX][moveY] = playerSign;
+
+            for(int i = 0; i < fieldSize; i++) {
+                for (int j = 0; j < fieldSize; j++) {
+                    System.out.printf("%d ", _pos[i][j]);
+                }
+                System.out.println("");
+            }
+            System.out.println(this.toString());
+
             return newField;
         }
     }
