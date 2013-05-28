@@ -1,0 +1,4 @@
+200 300 //windowWidth windowHeight
+2 //Number of components
+JButton "Еest" 50 50 80 50 java.lang.System currentTimeMillis //Class Text Width Height X Y [class method]
+JLabel "Hello, Kitty" 100 20 50 50
