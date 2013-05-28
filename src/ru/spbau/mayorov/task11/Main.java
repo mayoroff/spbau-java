@@ -1,11 +1,14 @@
-package ru.spbau.mayorov.task10;
+package ru.spbau.mayorov.task11;
 
 /**
+ * Provides entry point for app.
  * @author Arseny Mayorov.
- *         Date: 26.05.13
  */
 public class Main {
 
+    /** Entry point for application.
+     * @param args command-line arguments
+     * */
     public static void main(String[] args) {
 
         LoginWindow loginWindow = new LoginWindow();

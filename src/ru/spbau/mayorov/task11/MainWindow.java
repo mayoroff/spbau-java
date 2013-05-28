@@ -1,4 +1,4 @@
-package ru.spbau.mayorov.task10;
+package ru.spbau.mayorov.task11;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -7,23 +7,34 @@ import java.awt.event.ActionEvent;
 import java.io.*;
 
 /**
+ * Represents main window of application.
  * @author Arseny Mayorov.
- *         Date: 28.05.13
  */
 public class MainWindow extends JFrame {
 
+    /** Main panel. */
     private JPanel contentPane;
+    /** 'Open' menu item. */
     private final JMenuItem mntmOpen;
+    /** 'Close' menu item. */
     private final JMenuItem mntmClose;
+    /** 'About' menu item. */
     private final JMenuItem mntmAbout;
+    /** 'Exit' menu item. */
     private final JMenuItem mntmExit;
+    /** 'Open' button. */
     private final JButton openButton;
+    /** Tabs container. */
     private final JTabbedPane tabbedPane;
+    /** 'Close' button. */
     private final JButton closeButton;
+    /** 'About' button. */
     private final JButton aboutButton;
+    /** 'Exit' button. */
     private final JButton exitButton;
 
-    Action openAction = new AbstractAction() {
+    /** 'Open file' action. */
+    private Action openAction = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -40,7 +51,7 @@ public class MainWindow extends JFrame {
                 JTextArea textArea = new JTextArea();
                 textArea.read(br, null);
                 tabbedPane.addTab(selectedFile.getName(), textArea);
-                tabbedPane.setSelectedIndex(tabbedPane.getTabCount()-1);
+                tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
                 updateClose();
             } catch (FileNotFoundException e1) {
                 JOptionPane.showMessageDialog(openButton, "File not found.");
@@ -52,8 +63,8 @@ public class MainWindow extends JFrame {
 
 
 
-
-    Action closeAction = new AbstractAction() {
+    /** 'Close tab' action. */
+    private Action closeAction = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if ((tabbedPane != null) && (tabbedPane.getTabCount() > 0)) {
@@ -63,21 +74,25 @@ public class MainWindow extends JFrame {
         }
     };
 
-    Action aboutAction = new AbstractAction() {
+    /** 'About program' action. */
+    private Action aboutAction = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             JOptionPane.showMessageDialog(aboutButton, "Swing UI Lab. \n(c) Arseny Mayorov, SPbAU");
         }
     };
 
-    Action exitAction = new AbstractAction() {
+    /** Exit action. */
+    private Action exitAction = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
     };
 
-
+    /** Window initialization is done here.
+     * @param userName name to greet in title.
+     * */
     MainWindow(String userName) {
         super("Hello, " + userName + "!");
 
@@ -186,6 +201,7 @@ public class MainWindow extends JFrame {
         updateClose();
     }
 
+    /** Updates status of close button and menu item. */
     public void updateClose() {
         mntmClose.setEnabled(tabbedPane != null && tabbedPane.getTabCount() > 0);
         closeButton.setEnabled(tabbedPane != null && tabbedPane.getTabCount() > 0);
