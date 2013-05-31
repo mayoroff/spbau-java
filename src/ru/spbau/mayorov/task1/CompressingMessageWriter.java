@@ -7,7 +7,7 @@ import java.io.IOException;
  * @author Arseny Mayorov.
  * Date: 24.02.13
  */
-public final class CompressingMessageWriter implements MessageWriter {
+public class CompressingMessageWriter implements MessageWriter {
 
     /** External message writer. */
     private MessageWriter writer = null;
@@ -18,12 +18,12 @@ public final class CompressingMessageWriter implements MessageWriter {
      *
      * @param wr - external MessageWriter.
      */
-    CompressingMessageWriter(final MessageWriter wr) {
+    CompressingMessageWriter(MessageWriter wr) {
         this.writer = wr;
     }
 
     @Override
-    public void messageWrite(final Message msg) throws IOException {
+    public void messageWrite(Message msg) throws IOException {
         if (firstMessage == null) {
             firstMessage = msg;
         } else {
@@ -43,5 +43,10 @@ public final class CompressingMessageWriter implements MessageWriter {
             writer.messageWrite(firstMessage);
         }
         firstMessage = null;
+    }
+
+    /** Closes writer. */
+    public void close() throws IOException {
+        writer.close();
     }
 }

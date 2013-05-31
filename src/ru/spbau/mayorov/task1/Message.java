@@ -9,7 +9,7 @@ import java.util.List;
  * @author Arseny Mayorov.
  * Date: 24.02.13
  */
-public final class Message {
+public class Message {
 
     /** Contains content lines. */
     private List<String> contents = new ArrayList<String>();
@@ -20,7 +20,7 @@ public final class Message {
      * @param lines  List of message lines.
      */
     Message(final List<String> lines) {
-        this.contents.addAll(lines);
+        contents.addAll(lines);
     }
 
     /** Append content of given message to current.
@@ -28,7 +28,7 @@ public final class Message {
      * @param msg Given message.
      */
     void append(final Message msg) {
-        this.contents.addAll(msg.contents);
+        contents.addAll(msg.contents);
     }
 
     /** Returns unmodifiable list of message lines.

@@ -23,7 +23,7 @@ public abstract class Main {
         } else if (args.length == 1) {
             input = args[0];
         } else {
-            System.out.println("Usage: Main inputFileName [outputFileName]");
+            System.err.println("Usage: Main inputFileName [outputFileName]");
             return;
         }
         FileMessageReader reader = null;
@@ -46,11 +46,11 @@ public abstract class Main {
 
 
         } catch (FileNotFoundException e) {
-            System.out.println("Input file not found.");
+            System.err.println("Input file not found.");
         } catch (IllegalMessageFormatException e) {
-            System.out.println("Bad input file format.");
+            System.err.println("Bad input file format. " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("I/O error occured.");
+            System.err.println("I/O error occured.");
         } finally {
 
             try {
@@ -59,9 +59,10 @@ public abstract class Main {
                 }
                 if (writer != null) {
                     writer.flush();
+                    writer.close();
                 }
             } catch (IOException e) {
-                System.out.println("Cleanup failed. Sorry.");
+                System.err.println("Cleanup failed. Sorry.");
             }
 
         }

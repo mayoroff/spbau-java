@@ -11,16 +11,18 @@ import java.util.ArrayList;
  * @author Arseny Mayorov.
  * Date: 24.02.13
  */
-public final class FileMessageReader extends BufferedReader {
+public class FileMessageReader {
+
+    private BufferedReader bufferedReader;
 
     /** Constructs FileMessageReader for give fileName.
      *
      * @param fileName file to read from.
      * @throws FileNotFoundException thrown when file not found.
      */
-    public FileMessageReader(final String fileName)
+    public FileMessageReader(String fileName)
                        throws FileNotFoundException {
-        super(new FileReader(fileName));
+        bufferedReader = new BufferedReader(new FileReader(fileName));
     }
 
     /** Reads message from file.
@@ -31,7 +33,7 @@ public final class FileMessageReader extends BufferedReader {
      */
     Message readMessage() throws IOException, IllegalMessageFormatException {
         Message msg;
-        String numOfLines = super.readLine();
+        String numOfLines = bufferedReader.readLine();
         if (numOfLines == null) {
             return null;
         }
@@ -40,18 +42,23 @@ public final class FileMessageReader extends BufferedReader {
             int lines = Integer.parseInt(numOfLines);
             ArrayList<String> content = new ArrayList<String>();
             for (int i = 0; i < lines; i++) {
-                String line = super.readLine();
+                String line = bufferedReader.readLine();
                 if (line == null) {
-                    throw new IllegalMessageFormatException();
+                    throw new IllegalMessageFormatException("Failed to read line");
                 }
                 content.add(line);
             }
             msg = new Message(content);
 
         } catch (NumberFormatException e) {
-            throw new IllegalMessageFormatException();
+            throw new IllegalMessageFormatException("Failed to get number of lines");
         }
 
         return msg;
+    }
+
+    /** Closes reader. */
+    public void close() throws IOException {
+        bufferedReader.close();
     }
 }

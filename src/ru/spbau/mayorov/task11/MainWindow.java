@@ -35,6 +35,9 @@ public class MainWindow extends JFrame {
 
     /** 'Open file' action. */
     private Action openAction = new AbstractAction() {
+        {
+            putValue(Action.NAME, "Open");
+        }
         @Override
         public void actionPerformed(ActionEvent e) {
 
@@ -45,14 +48,19 @@ public class MainWindow extends JFrame {
                 return;
             }
 
-            File selectedFile = fileChooser.getSelectedFile();
+            final File selectedFile = fileChooser.getSelectedFile();
 
             try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
-                JTextArea textArea = new JTextArea();
+                final JTextArea textArea = new JTextArea();
                 textArea.read(br, null);
-                tabbedPane.addTab(selectedFile.getName(), textArea);
-                tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-                updateClose();
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        tabbedPane.addTab(selectedFile.getName(), textArea);
+                        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+                        updateClose();
+                    }
+                });
             } catch (FileNotFoundException e1) {
                 JOptionPane.showMessageDialog(openButton, "File not found.");
             } catch (IOException e1) {
@@ -61,21 +69,36 @@ public class MainWindow extends JFrame {
         }
     };
 
-
-
     /** 'Close tab' action. */
     private Action closeAction = new AbstractAction() {
+
+        {
+            putValue(Action.NAME, "Close");
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            if ((tabbedPane != null) && (tabbedPane.getTabCount() > 0)) {
-               tabbedPane.remove(tabbedPane.getSelectedIndex());
-            }
-            updateClose();
+
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    if ((tabbedPane != null) && (tabbedPane.getTabCount() > 0)) {
+                        tabbedPane.remove(tabbedPane.getSelectedIndex());
+                    }
+                    updateClose();                }
+            });
+
+
         }
     };
 
     /** 'About program' action. */
     private Action aboutAction = new AbstractAction() {
+
+        {
+            putValue(Action.NAME, "About");
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             JOptionPane.showMessageDialog(aboutButton, "Swing UI Lab. \n(c) Arseny Mayorov, SPbAU");
@@ -84,6 +107,11 @@ public class MainWindow extends JFrame {
 
     /** Exit action. */
     private Action exitAction = new AbstractAction() {
+
+        {
+            putValue(Action.NAME, "Exit");
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
@@ -106,26 +134,18 @@ public class MainWindow extends JFrame {
         menuBar.add(mnFile);
 
         mntmOpen = new JMenuItem(openAction);
-        mntmOpen.setHideActionText(true);
-        mntmOpen.setText("Open");
         mnFile.add(mntmOpen);
 
         mntmClose = new JMenuItem(closeAction);
-        mntmClose.setHideActionText(true);
-        mntmClose.setText("Close");
         mnFile.add(mntmClose);
 
         JSeparator separator = new JSeparator();
         mnFile.add(separator);
 
         mntmAbout = new JMenuItem(aboutAction);
-        mntmAbout.setHideActionText(true);
-        mntmAbout.setText("About");
         mnFile.add(mntmAbout);
 
         mntmExit = new JMenuItem(exitAction);
-        mntmExit.setHideActionText(true);
-        mntmExit.setText("Exit");
         mnFile.add(mntmExit);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -138,8 +158,6 @@ public class MainWindow extends JFrame {
         contentPane.setLayout(gbl_contentPane);
 
         openButton = new JButton(openAction);
-        openButton.setHideActionText(true);
-        openButton.setText("Open");
         GridBagConstraints c_openButton = new GridBagConstraints();
         c_openButton.fill = GridBagConstraints.HORIZONTAL;
         c_openButton.anchor = GridBagConstraints.NORTH;
@@ -170,8 +188,6 @@ public class MainWindow extends JFrame {
 
 
         aboutButton = new JButton(aboutAction);
-        aboutButton.setHideActionText(true);
-        aboutButton.setText("About");
         GridBagConstraints c_aboutButton = new GridBagConstraints();
         c_aboutButton.anchor = GridBagConstraints.SOUTH;
         c_aboutButton.fill = GridBagConstraints.HORIZONTAL;
@@ -181,8 +197,6 @@ public class MainWindow extends JFrame {
         contentPane.add(aboutButton, c_aboutButton);
 
         exitButton = new JButton(exitAction);
-        exitButton.setHideActionText(true);
-        exitButton.setText("Exit");
         GridBagConstraints c_exitButton = new GridBagConstraints();
         c_exitButton.anchor = GridBagConstraints.SOUTH;
         c_exitButton.fill = GridBagConstraints.HORIZONTAL;
@@ -203,8 +217,7 @@ public class MainWindow extends JFrame {
 
     /** Updates status of close button and menu item. */
     public void updateClose() {
-        mntmClose.setEnabled(tabbedPane != null && tabbedPane.getTabCount() > 0);
-        closeButton.setEnabled(tabbedPane != null && tabbedPane.getTabCount() > 0);
+        closeAction.setEnabled(tabbedPane != null && tabbedPane.getTabCount() > 0);
     }
 
 }

@@ -10,28 +10,35 @@ import java.util.List;
  * @author Arseny Mayorov.
  * Date: 24.02.13
  */
-public final class FileMessageWriter extends BufferedWriter
-                                     implements MessageWriter {
+public class FileMessageWriter implements MessageWriter {
 
     /** Constructs FileMessageWriter using give fileName.
      *
      * @param fileName - file for output.
      * @throws IOException thrown in case of IO error.
      */
+
+    private BufferedWriter bufferedWriter;
+
     public FileMessageWriter(final String fileName) throws IOException {
-        super(new FileWriter(fileName));
+        bufferedWriter = new BufferedWriter(new FileWriter(fileName));
     }
 
     @Override
     public void messageWrite(final Message msg) throws IOException {
         List<String> content = msg.getLines();
         int linesNum = content.size();
-        super.write(String.valueOf(linesNum));
-        super.newLine();
+        bufferedWriter.write(String.valueOf(linesNum));
+        bufferedWriter.newLine();
         for (String line: content) {
-            super.write(line);
-            super.newLine();
+            bufferedWriter.write(line);
+            bufferedWriter.newLine();
         }
-        super.flush();
+        bufferedWriter.flush();
+    }
+
+    /** Closes writer. */
+    public void close() throws IOException {
+        bufferedWriter.close();
     }
 }

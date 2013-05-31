@@ -13,5 +13,8 @@ public interface MessageWriter {
      * @param msg message to write.
      * @throws IOException thrown in case of IO errors.
      */
-    void messageWrite(final Message msg) throws IOException;
+    void messageWrite(Message msg) throws IOException;
+
+    /** Closes writer. */
+    void close() throws IOException;
 }

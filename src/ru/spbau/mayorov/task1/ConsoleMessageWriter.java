@@ -7,7 +7,7 @@ import java.util.List;
  * @author Arseny Mayorov.
  * Date: 24.02.13
  */
-public final class ConsoleMessageWriter implements MessageWriter {
+public class ConsoleMessageWriter implements MessageWriter {
     /** Message number counter. */
     private int currentMsgNumber = 1;
 
@@ -25,5 +25,10 @@ public final class ConsoleMessageWriter implements MessageWriter {
             currentLineNumber++;
         }
         currentMsgNumber++;
+    }
+
+    /** Closes writer. */
+    @Override
+    public void close() {
     }
 }
